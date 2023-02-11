@@ -26,3 +26,5 @@ for i in guess:
         io.sendline(str(i))
 
 io.interactive()
+
+# python solve.py
