@@ -1,4 +1,4 @@
-<h3>
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/604752c8-6275-4707-aef6-f3c8406ba0f3)<h3>
     Ecowas CTF 2023 ( Prequalification )
 </h3>
 
@@ -2850,6 +2850,17 @@ for i in x:
 print(flag)
 ```
 
+Running it gives the flag with some null bytes appended to it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/55ec68ee-6005-4591-999c-0d88e64d18bd)
+
+We can confirm it's the flag by passing it as the argument required by the binary
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/e2c2381f-3272-484e-b38a-0ecab05e995e)
+
+```
+Flag: EcoWasCTF{Y0U_4R3_4_M4ST3R_0F_Z3!}
+```
+
+------- Will Upload Crypto & Forensics Soon ---------
 
 
 
