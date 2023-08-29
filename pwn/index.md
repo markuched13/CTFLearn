@@ -2642,6 +2642,213 @@ After running, it prints many result but eventually you will get the key to be `
 Flag: flag{im_sharper_than_you_think}
 ```
 
+#### Tometriii
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/4f7d1887-d96d-43b4-bf8f-873933d6a7e3)
+
+The first thing I noticed there is the flag format
+
+I read ctf writeups and well aware about the fact that the flag is Hong Kong Cert CTF format
+
+So I looked for writeup and found the solution to that 
+
+Here's the [solution](https://github.com/blackb6a/hkcert-ctf-2022-challenges/tree/main/13-middle-road/writeup)
+
+To be honest if this wasn't a copied challenge we might not pull it off 😂
+
+```
+Flag: hkcert22{CLi3NT_can_B3_reverSE_EnGIN33red_by_0ne_W4y_or_aNoTh3r}
+```
+
+#### ReZerv3
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/bb226182-5c9e-443f-8787-4b20992056b1)
+
+From the challenge description we can tell we'll be using Z3 to solve that
+
+After downloading the attached file and checking the file type I got this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/fe71b532-c5c9-4e44-8025-3e67e83341e2)
+
+We are working with a x64 binary which is dynamically linked and not stripped
+
+I'll run it to know what it does
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/15a9434a-7fd9-4d42-ae75-31bd3bcac4ba)
+
+It requires an argument to be passed into then it prints out Incorrect if wrong and Correct if right
+
+Seems like a job for angr also
+
+Using ghidra I decompiled the binary
+
+Here's the main function
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/8180d540-e713-4eda-a969-70d2870dce76)
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/6409fc7f-55cf-41c6-9540-95211815c33e)
+```c
+undefined main(int param_1,undefined8 *param_2)
+
+{
+  char *__s;
+  size_t sVar1;
+  
+  if (param_1 == 2) {
+    __s = (char *)param_2[1];
+    sVar1 = strlen(__s);
+    if (sVar1 == 0x22) {
+      if (((((((((((int)__s[7] - (int)__s[8] * (int)__s[5] * (int)__s[6] * (int)__s[2]) -
+                 (int)__s[0xb]) - (int)__s[9]) + (int)__s[1] + (int)__s[4] + (int)__s[3]) -
+               (int)__s[10] == -0x391825f) &&
+             ((int)__s[5] +
+              (((((int)__s[3] - (int)__s[4]) - (int)__s[6]) + (int)__s[9] +
+               (int)__s[8] * (int)__s[10] * (int)__s[0xb]) - (int)__s[2]) +
+              (int)__s[0xc] * (int)__s[7] == 0x4ac36)) &&
+            ((int)__s[0xb] +
+             (((((int)__s[3] - (int)__s[0xc] * (int)__s[7]) - (int)__s[0xd]) +
+              (int)__s[10] * (int)__s[4]) - (int)__s[5] * (int)__s[6] * (int)__s[9]) + (int)__s[8]
+             == -0xe6fc0)) &&
+           (((((((((int)__s[0xc] - (int)__s[7] * (int)__s[0xb]) + (int)__s[4]) - (int)__s[9]) -
+               (int)__s[5] * (int)__s[6]) - (int)__s[0xe]) -
+              (int)__s[8] * (int)__s[10] * (int)__s[0xd] == -0x935bc &&
+             ((int)__s[9] * (int)__s[10] * (int)__s[8] +
+              (((((int)__s[6] + (int)__s[7] + (int)__s[0xe] + (int)__s[0xd]) - (int)__s[0xc]) -
+               (int)__s[0xf] * (int)__s[0xb]) - (int)__s[5]) == 0xba254)) &&
+            (((int)__s[0xc] +
+              ((((((int)__s[0xd] + (int)__s[0xb]) - (int)__s[10]) + (int)__s[0xf] * (int)__s[0x10] +
+                (int)__s[6] * (int)__s[8]) - (int)__s[7]) - (int)__s[9]) + (int)__s[0xe] == 0x2298
+             && (((((((((int)__s[0xb] - (int)__s[8]) + (int)__s[0x10] * (int)__s[0xd] + (int)__s[7])
+                     - (int)__s[0x11]) - (int)__s[0xe]) - (int)__s[9]) +
+                  (int)__s[10] * (int)__s[0xf]) - (int)__s[0xc] == 0x2e4a &&
+                 (((((((int)__s[9] - (int)__s[0x12]) - (int)__s[8]) + (int)__s[0xc]) - (int)__s[0xf]
+                   ) + (int)__s[0x10] + (int)__s[0xb] * (int)__s[0xd] * (int)__s[0xe] +
+                  (int)__s[0x11]) - (int)__s[10] == 0x39e7d)))))))) &&
+          (((((((int)__s[0x10] * (int)__s[0x12] * (int)__s[0xd] * (int)__s[0xb] - (int)__s[0x11]) -
+              (int)__s[10]) + (int)__s[9] + (int)__s[0xf] * (int)__s[0xc]) - (int)__s[0x13]) -
+            (int)__s[0xe] == 0xb8a12a &&
+           (((((((((((((int)__s[0x14] + (int)__s[0xc]) -
+                     (int)__s[0xe] * (int)__s[0x13] * (int)__s[0xf] * (int)__s[0x12]) +
+                    (int)__s[0x10]) - (int)__s[0xd]) + (int)__s[0x11]) - (int)__s[0xb]) -
+                 (int)__s[10] == -0x1416994 &&
+                ((int)__s[0xe] +
+                 (((int)__s[0x10] - (int)__s[0x13]) - (int)__s[0xf]) +
+                 (int)__s[0x14] * (int)__s[0x11] + (int)__s[0xb] * (int)__s[0xd] + (int)__s[0x12] +
+                 (int)__s[0x15] * (int)__s[0xc] == 0x3f91)) &&
+               ((int)__s[0x12] * (int)__s[0x10] +
+                ((((int)__s[0xf] * (int)__s[0x11] - (int)__s[0x14]) - (int)__s[0xc]) -
+                (int)__s[0x13] * (int)__s[0xe]) + (int)__s[0x15] * (int)__s[0xd] + (int)__s[0x16] ==
+                0x287b)) &&
+              (((int)__s[0x17] * (int)__s[0x11] +
+                ((((((int)__s[0x15] + (int)__s[0xd] * (int)__s[0x13]) - (int)__s[0x16]) -
+                  (int)__s[0x10]) + (int)__s[0x12] + (int)__s[0x14] + (int)__s[0xf]) - (int)__s[0xe]
+                ) == 0x42ba &&
+               (((((int)__s[0x17] + (int)__s[0x10] * (int)__s[0xe] + (int)__s[0xf] * (int)__s[0x14])
+                 - (int)__s[0x12] * (int)__s[0x15]) + (int)__s[0x13] * (int)__s[0x18]) -
+                (int)__s[0x16] * (int)__s[0x11] == 0xcea)))) &&
+             (((int)__s[0x13] +
+               (((int)__s[0x10] + (int)__s[0x19] + (int)__s[0x15] + (int)__s[0x16] + (int)__s[0x18]
+                 + (int)__s[0x12] + (int)__s[0x14] * (int)__s[0x17]) - (int)__s[0xf]) +
+               (int)__s[0x11] == 0x1b23 &&
+              (((int)__s[0x12] * (int)__s[0x13] * (int)__s[0x16] +
+                (((((int)__s[0x17] * (int)__s[0x11] + (int)__s[0x14] * (int)__s[0x19]) -
+                  (int)__s[0x10]) + (int)__s[0x1a] * (int)__s[0x15]) - (int)__s[0x18]) == 0x68c60 &&
+               ((int)__s[0x17] +
+                ((((int)__s[0x11] * (int)__s[0x18] +
+                   (int)__s[0x1b] * (int)__s[0x19] * (int)__s[0x16] + (int)__s[0x1a] +
+                  (int)__s[0x14]) - (int)__s[0x15]) - (int)__s[0x13] * (int)__s[0x12]) == 0x4fc8d)))
+              ))) && ((int)__s[0x12] +
+                      (((((((int)__s[0x15] * (int)__s[0x19] + (int)__s[0x16]) - (int)__s[0x1c]) -
+                         (int)__s[0x13]) - (int)__s[0x1a] * (int)__s[0x14] * (int)__s[0x1b]) +
+                       (int)__s[0x18]) - (int)__s[0x17]) == -0x54b27)))))) &&
+         (((((int)__s[0x14] +
+             (((((((int)__s[0x1d] + (int)__s[0x19] + (int)__s[0x13]) - (int)__s[0x18]) -
+                (int)__s[0x15]) - (int)__s[0x17]) + (int)__s[0x1c] + (int)__s[0x1b]) -
+             (int)__s[0x16] * (int)__s[0x1a]) == -0x1db5 &&
+            (((((((int)__s[0x1a] + (int)__s[0x16] * (int)__s[0x17] + (int)__s[0x1e] + (int)__s[0x15]
+                 ) - (int)__s[0x1d]) + (int)__s[0x14]) - (int)__s[0x18] * (int)__s[0x19]) -
+             (int)__s[0x1b]) - (int)__s[0x1c] == 0xb4b)) &&
+           (((((((((((int)__s[0x17] + (int)__s[0x1e]) - (int)__s[0x18]) + (int)__s[0x19]) -
+                 (int)__s[0x1d]) - (int)__s[0x1f]) - (int)__s[0x15]) + (int)__s[0x1a]) -
+             (int)__s[0x1b]) + (int)__s[0x16]) - (int)__s[0x1c] == 0x43)) &&
+          (((((((((((int)__s[0x1f] - (int)__s[0x1a]) - (int)__s[0x19]) - (int)__s[0x17]) +
+                (int)__s[0x1e]) - (int)__s[0x1c]) + (int)__s[0x1d]) - (int)__s[0x1b]) -
+            (int)__s[0x16]) - (int)__s[0x20] * (int)__s[0x18] == -0x775 &&
+           ((((((((int)__s[0x19] - (int)__s[0x1f] * (int)__s[0x17]) + (int)__s[0x1b]) -
+               (int)__s[0x1a] * (int)__s[0x20]) + (int)__s[0x1e]) - (int)__s[0x18] * (int)__s[0x1d])
+            + (int)__s[0x21]) - (int)__s[0x1c] == -0x2ed5)))))) {
+        printf("CORRECT :)");
+      }
+      else {
+        printf("INCORRECT :(");
+      }
+    }
+    else {
+      printf("INCORRECT :(");
+    }
+    return 0;
+  }
+  printf("Usage: %s <FLAG>",*param_2);
+  return 1;
+}
+```
+
+Looking at that we can immediately tell angr would take a lot of time & memory before solving that
+
+Since the math being done there is kinda brutal lmao 😹
+
+Anyways [Z3](https://github.com/Z3Prover/z3) is a perfect job for this
+
+I searched for writeups and found some links which helped me create solve script
+
+[link1](https://ctftime.org/writeup/36656)
+[link2](https://yocchin.hatenablog.com/entry/2022/03/11/075100)
+[link3](https://www.youtube.com/watch?v=QfYZJHYZARQ&t=1065s)
+
+Here's the solve [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/reverse%20engineering/reZerv3/solve.py)
+
+```python=
+from z3 import *
+
+x = [BitVec('x%d' % i, 8) for i in range(42)]
+
+s = Solver()
+
+for i, c in enumerate(b'EcoWasCTF{'):
+    s.add(x[i] == c)
+
+for v in x:
+    s.add(v > 0x20)
+    s.add(v < 0x7f)
+
+s.add(x[3] + x[4] + x[1] + x[7] - x[2] * x[6] * x[5] * x[8] - x[11] - x[9] - x[10] == -59867743)
+s.add(x[7] * x[12] + x[3] - x[4] - x[6] + x[9] + x[11] * x[10] * x[8] - x[2] + x[5] == 306230)
+s.add(x[8] + x[4] * x[10] + x[3] - x[7] * x[12] - x[13] - x[9] * x[6] * x[5] + x[11] == -946112)
+s.add(x[4] + x[12] - x[11] * x[7] - x[9] - x[6] * x[5] - x[14] - x[13] * x[10] * x[8] == -603580)
+s.add(x[8] * x[10] * x[9] + x[13] + x[14] + x[7] + x[6] - x[12] - x[11] * x[15] - x[5] == 762452)
+s.add(x[14] + x[16] * x[15] + x[11] + x[13] - x[10] + x[8] * x[6] - x[7] - x[9] + x[12] == 8856)
+s.add(x[7] + x[11] - x[8] + x[13] * x[16] - x[17] - x[14] - x[9] + x[15] * x[10] - x[12] == 11850)
+s.add(x[17] + x[12] + x[9] - x[18] - x[8] - x[15] + x[16] + x[14] * x[13] * x[11] - x[10] == 237181)
+s.add(x[11] * x[13] * x[18] * x[16] - x[17] - x[10] + x[9] + x[12] * x[15] - x[19] - x[14] == 12099882)
+s.add(x[17] + x[16] + x[20] + x[12] - x[18] * x[15] * x[19] * x[14] - x[13] - x[11] - x[10] == -21064084)
+s.add(x[17] * x[20] + x[16] - x[19] - x[15] + x[13] * x[11] + x[18] + x[12] * x[21] + x[14] == 16273)
+s.add(x[13] * x[21] + x[17] * x[15] - x[20] - x[12] - x[14] * x[19] + x[22] + x[16] * x[18] == 10363)
+s.add(x[17] * x[23] + x[15] + x[20] + x[18] + x[21] + x[19] * x[13] - x[22] - x[16] - x[14] == 17082)
+s.add(x[24] * x[19] + x[20] * x[15] + x[14] * x[16] + x[23] - x[21] * x[18] - x[17] * x[22] == 3306)
+s.add(x[17] + x[24] + x[22] + x[21] + x[25] + x[16] + x[18] + x[23] * x[20] - x[15] + x[19] == 6947)
+s.add(x[22] * x[19] * x[18] + x[17] * x[23] + x[25] * x[20] - x[16] + x[21] * x[26] - x[24] == 429152)
+s.add(x[23] + x[20] + x[26] + x[24] * x[17] + x[22] * x[25] * x[27] - x[21] - x[18] * x[19] == 326797)
+s.add(x[18] + x[24] + x[22] + x[25] * x[21] - x[28] - x[19] - x[27] * x[20] * x[26] - x[23] == -346919)
+s.add(x[20] + x[28] + x[19] + x[25] + x[29] - x[24] - x[21] - x[23] + x[27] - x[26] * x[22] == -7605)
+s.add(x[21] + x[30] + x[26] + x[23] * x[22] - x[29] + x[20] - x[25] * x[24] - x[27] - x[28] == 2891)
+s.add(x[22] + x[26] + x[25] + x[30] + x[23] - x[24] - x[29] - x[31] - x[21] - x[27] - x[28] == 67)
+s.add(x[29] + x[30] + x[31] - x[26] - x[25] - x[23] - x[28] - x[27] - x[22] - x[24] * x[32] == -1909)
+s.add(x[33] + x[25] - x[23] * x[31] + x[27] - x[32] * x[26] + x[30] - x[29] * x[24] - x[28] == -11989)
+
+r = s.check()
+assert r == sat
+
+m = s.model()
+flag = ''
+for i in x:
+    flag += chr(m[i].as_long())
+    
+print(flag)
+```
 
 
 
