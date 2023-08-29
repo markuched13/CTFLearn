@@ -88,7 +88,7 @@ Here's the solution to the challenges we solved:
 ### Warmup 5/5
 
 #### Netcat
-![](https://hackmd.io/_uploads/B1nxEOKT3.png)
+![1](https://hackmd.io/_uploads/B1nxEOKT3.png)
 
 All we need to do for this challenge is to connect to the remote host using netcat ( per the challenge name :P )
 
@@ -1945,7 +1945,7 @@ So we will loop through the entire alphabet and digits and special characters an
 
 To make the process a little less tedious I created a python script that automates the process of brute forcing characters
 
-Here's what my solve script will do:
+Here's what my solve [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/web/Ma%C3%AFmouna/enumerate.py) will do:
 - Enumerate database name
 - Get the mysql name
 - Enumerate table
