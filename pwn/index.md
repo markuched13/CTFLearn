@@ -2094,6 +2094,182 @@ Doing that I got the flag
 Flag: flag{3_bl1nd_m1ce_s33_h0w_th3y_run}
 ````
 
+### Reverse Engineering 8/8
+
+#### Saint Rings
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/b51dbf27-fcf5-442e-bc4a-c0ee7aa7927e)
+
+We are given a binary attached and from the challenge name we can tell that we'll be using `strings` command to get the flag i.e `SainT RINGS`
+
+After downloading the binary I just ran `strings` and `grepped` for the flag format which is `flag{`
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/0516c35e-e08b-488e-a3bd-b7176609bb1d)
+
+Doing that I got the flag
+
+```
+Flag: flag{3asy_3n0ugh_t0_f1nd?}
+```
+
+#### Sesame
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/974166d1-ae5d-4ae2-9ea0-01d868cab3e4)
+
+We are given a binary attached downloading it and checking the file type shows this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/f4d79aa2-f058-4dfd-b672-4abba52275aa)
+
+This is a x64 binary which is dynamically linked and not stripped
+
+The only protection not enabled is Canary (doesn't matter we ain't doing BOF) 
+
+But since PIE is enabled that means during the program execution the memory address will be randmoized 
+
+I decided to run it to know what it does
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/48ef3999-43e8-4767-b447-6f0fe617b529)
+
+We can see that it asks for a key then on giving the wrong key shows an error
+
+Looking at that this is a good candidate for angr 
+
+But first let us decompile it and know what it does
+
+I'll be using ghidra
+
+Note that I'll be renaming some values to understand it well
+
+Here's the main function
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/077ad6d0-b9bf-444f-9ff3-a5340700a388)
+```c
+undefined8 main(void)
+
+{
+  uint input;
+  uint key;
+  
+  input = 0;
+  key = getrand();
+  printf("Enter the sesame key : ");
+  __isoc99_scanf("%d",&input);
+  if ((input ^ key) == 0xdeadc0de) {
+    puts("Good!");
+    puts("Password = RWNvV2FzQ1RGe1JhbmRvbV9mMHJfUmFuZG9tXz8/Pz8/fQ== \n");
+    puts("Replace the ????? with the sesame value you found to get the Flag.\n");
+  }
+  else {
+    puts("Wrong.");
+  }
+  return 0;
+}
+```
+
+This is a fairly simple code and what it does is this:
+- Calls the `getrand()` function and the result returned by that function is stored in the key variable
+- Asks for the key and receives our input using `scanf`
+- Does a bitwise `xor` operation on our input and the key and if the result returned is `0xdeadc0de` it returns `True` then `puts` Good! to standard output
+- Else it `puts` Wrong.
+
+The password seems to be encoded in base64
+
+Decoding it gives this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/05ed96cc-d138-4618-9649-fac6c378fcb8)
+
+So we're to replace the question mark `?` with the rigt input value
+
+Our key function now is the `getrand()` function as it holds the value of the key
+
+Reading it shows this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/d93f08c9-3ccb-4c19-b0e9-0b82e5a01521)
+```c
+
+void getrand(void)
+
+{
+  rand();
+  return;
+}
+```
+
+So this just calls `rand()` 
+
+What that will do is get a random number but the issue is that since it isn't `seeded` that makes it less random 
+
+Therefore the key will always be the same
+
+Now that we know that let us get the key value
+
+I'll be using dynamic debugging to get it in this case I'll use `gdb-gef` debugger
+
+First I'll set a breakpoint in the `getrand()` function
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/eaf67a30-c61f-4d42-943d-09f732577c95)
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/8a190b29-6553-4a00-adca-04fdab603a8f)
+
+Now I'll disassemble the function to know the point it will return
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/b93da948-b1e2-4b88-aa59-9a2ad787ce92)
+
+So at `getrand+15` is where it will return
+
+I'll set a breakpoint there and continue the program execution
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/5f0a2928-55b5-45a2-9119-e0a8ad87b96d)
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/e8698a8d-b8eb-4ec8-92ab-a1db2ba1b0ae)
+
+The value stored in the `rax` register holds the return value of any function
+
+Looking at the rax I got the key random value
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/036e804f-1d0a-49c0-af33-f51b6d23fda6)
+
+```
+Key = 0x6b8b4567
+```
+
+Now that is settle we need to know the right input that meets this condition
+
+```
+input ^ 0x6b8b4567 = 0xdeadc0de
+```
+
+I just used `z3` to find the right input value that meets that constaint
+
+Here's my solve [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/reverse%20engineering/sesame/solve.py)
+
+```python=
+from z3 import *
+
+def sesame(value):
+    solver = Solver()
+
+    key = BitVec('key', 32)
+
+    constraint = (key ^ value) == 0xdeadc0de
+
+    solver.add(constraint)
+
+    if solver.check() == sat:
+        model = solver.model()
+        solution_key = model[key].as_long()
+        return solution_key
+    else:
+        return None
+
+value = 0x6b8b4567
+
+solution = sesame(value)
+if solution is not None:
+    print(f"Solution found: key = 0x{solution:08X}")
+else:
+    print("No solution found.")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
