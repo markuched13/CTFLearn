@@ -88,7 +88,7 @@ Here's the solution to the challenges we solved:
 ### Warmup 5/5
 
 #### Netcat
-![1](https://hackmd.io/_uploads/B1nxEOKT3.png)
+![](https://hackmd.io/_uploads/B1nxEOKT3.png)
 
 All we need to do for this challenge is to connect to the remote host using netcat ( per the challenge name :P )
 
@@ -1499,7 +1499,7 @@ And on [hacktricks](https://book.hacktricks.xyz/pentesting-web/ssrf-server-side-
 
 And that's what I'm going to do here
 
-I made a script to automate the stress :slightly_smiling_face: 
+I made a [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/web/incredibly%20self-referential/ssrf.py) to automate the stress :slightly_smiling_face: 
 
 ```python=
 import requests
