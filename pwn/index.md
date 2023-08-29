@@ -1952,7 +1952,7 @@ Here's what my solve [script](https://github.com/markuched13/markuched13.github.
 
 Here's my solve script
 
-```python
+```python=
 import string
 import requests
 import time
@@ -2257,14 +2257,291 @@ else:
     print("No solution found.")
 ```
 
+Running it gives this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/f388d81f-ee24-4e74-a6bd-cedfd1e7912c)
+
+So we just convert that hex value to integer
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/d97e033f-5dba-4779-b5d7-341904b67f48)
+
+And that value will be the right input
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/a06b0dff-d73f-480a-aa39-c0caeb1b50a3)
+
+Now the flag is
+
+```
+Flag: EcoWasCTF{Random_f0r_Random_3039200697}
+```
+
+#### Veyize
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/90c3d16a-d528-45d0-a9d1-75c0be8b9f5e)
+
+This challenge was actually not solve by me 😢
+
+Few days before this CTF, someone I know sent me his writeup to solve that in one of the recently concluded Ancy Togo CTF
+
+So I noticed it was the same lol
+
+Anyways here's the detailed solution to solve that
+
+[Solution](https://github.com/w31rdr4v3n/_CTF/tree/main/Ancy_Togo_CTF_2023#reverse)
+
+```
+Flag: flag{32B1t_b0mB_l48_compl3te}
+```
+
+#### Petstar
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/a615d0cd-6b5d-45e5-add8-ddcbbe911d8e)
+
+Damn a `.exe` binary 💀
+
+At first I already felt afraid cause I hate decompiling `.exe` binary but this wasn't too hard and it was understandable (most times it requires dynamic debugging and I use Linux 😭)
+
+Downloading the binary and checking the file type shows this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/3501cd21-af8c-42bf-8ae6-e3289355b7d3)
+
+I will run it to know what it does
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/6653a50b-d41e-4cd1-8c87-81bbbe722d8a)
+
+It gives us 4 options
+
+```
+1. Make a purchase but amount must equal 0x1337
+2. Check acount balance
+3. Increase account balance
+4. Quit
+```
+
+Now that we have a basic understanding of what this program does let us decompile and read some source code 🙂
+
+Using ghidra I'll decompile it 
+
+I searched for strings 
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/b34a6a0b-8c30-49f3-93de-110056b785da)
+
+Then could get to the main function 
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/556b8eec-8361-43c0-847c-be74b0d21840)
+
+Here's the main function
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/3e63606a-b8f9-4532-9bf4-93e2545599b3)
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/6af3a6b0-74b3-4524-ac2f-09de39050ae1)
+```c
+int __cdecl main(int _Argc,char **_Argv,char **_Env)
+
+{
+  double increase_amount_by;
+  int choice;
+  undefined4 leet;
+  int long_int_amount;
+  byte attempt;
+  uint balance;
+  
+  __main();
+  balance = 0x50;
+  attempt = 0;
+LAB_1400015ea:
+  printf("Menu:\n");
+  printf("1- Make a purchase (amount = 0x1337 EcoWas)\n");
+  printf("2- Check account balance\n");
+  printf("3- Increase account balance\n");
+  printf("4- Quit\n");
+  printf("Choice: ");
+  scanf("%d",&choice);
+  if (choice == 4) {
+    printf("Thank you for using our service!\n\n");
+    return 0;
+  }
+  if (choice < 5) {
+    if (choice == 3) {
+      if (attempt == 0) {
+        attempt = 1;
+        printf("Number of Attempts: %d, Enter the increase amount: ",1);
+        scanf("%lf",&increase_amount_by);
+        long_int_amount = (int)(longlong)increase_amount_by;
+        if (increase_amount_by == 4839.0) {
+          printf("You cannot increase your account by 0x12e7 EcoWas.\n\n");
+          printf("Your account balance is %d EcoWas.\n\n",(ulonglong)balance);
+        }
+        else {
+          balance = long_int_amount + balance;
+          if ((int)balance < 0) {
+            printf("Invalid increase amount. The balance after increase would be negative.\n\n");
+            balance = 80;
+            printf("Your account balance is %d EcoWas.\n\n",80);
+          }
+          else {
+            printf("Account increased by %d EcoWas. New balance: %d EcoWas\n",
+                   (longlong)increase_amount_by & 0xffffffff,(ulonglong)balance);
+          }
+        }
+      }
+      else {
+        printf("You can no longer increase your account value. Number of Attempts: %d.\n\n",
+               (ulonglong)(attempt ^ 1));
+      }
+      goto LAB_1400015ea;
+    }
+    if (choice < 4) {
+      if (choice == 1) {
+        leet = 0x1337;
+        if (balance == 0x1337) {
+          printf("Purchase complete!\n");
+          if (attempt == 0) {
+            printf("You must first increase your account value.\n\n");
+          }
+          else {
+            printf("Congratulations! You have purchased the super flag!\n\n");
+            printf(
+                  "Password = OQ2EAKBSIRZCK5KMOY4DASSAIYYHMQCFGA5EKMBDHI4DSRJQNZXG43TOJY====== \n\n"
+                  );
+            printf("Replace the ????? with the value you found to get the Flag.\n\n");
+          }
+        }
+        else {
+          printf("The value of your account must be 0x1337.\n\n");
+        }
+      }
+      else {
+        if (choice != 2) goto LAB_1400017f1;
+        printf("Current balance: %d EcoWas\n\n",(ulonglong)balance);
+      }
+      goto LAB_1400015ea;
+    }
+  }
+LAB_1400017f1:
+  printf("Invalid choice. Please select a valid option.\n\n");
+  goto LAB_1400015ea;
+}
+```
+
+First thing to notice is the password which we can assume is the flag:
+
+```
+Password = OQ2EAKBSIRZCK5KMOY4DASSAIYYHMQCFGA5EKMBDHI4DSRJQNZXG43TOJY======
+```
+
+Decoding it gives this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/59813bfc-2bea-4c0f-a8ad-01a1a30a5d89)
+```
+EcoWasCTF{Gg_you_Got_it_Right_?????}
+```
+
+So we will replace the question mark `?` with the value used to get the flag (that's according to what's on the code)
+
+Now that we know that I'll explain what the program does:
+
+We are given four options
+
+Here's what option 1 does:
+- It sets the variable `leet` to `0x1337`
+- Does an if comparison on our current balance to the leet variable value
+- If that compare returns True then we get to the win part where it prints out the flag and some words
+- Else it prints that the value in our balance must equal `0x1337`
+
+Here's what option 2 does:
+- This will show us out current balance
+
+Here's what option 3 does:
+- The attempt variable is set to 0
+- Then it checks if the value stored in the attempt variable to 0
+- If it returns True then it sets it to 1
+- Then it receives our input using `scanf`
+- It then converts our input to long integer
+- A check is done to compare our converted integer input to `4839`
+- If the check returns True we get an error saying we can't increase our balance by that amount
+- Else it sums up our current balance with our received input
+- The balance is initialized to `80` on the stack
+- It then checks if the balance is less than `0` this is to prevent using negative integer as our input
+- If it is then it prints out some error saying invalid amount
+- Else it does this math on our input: `input & 0xffffffff`
+- It then sets our attempt to `0` since it will xor 1 ( our current attempt value with 1 )
+
+Here's what option 4 does:
+- It just basically exits
 
 
+Now that we know that our aim is to make the purchase in option 1
+
+Normally we can just do this:
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/28efe47e-762d-4e6b-bb24-69e0448fc9ff)
+```
+➜  petstar python3
+Python 3.11.2 (main, Feb 12 2023, 00:48:52) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> current = 80
+>>> goal = 0x1337
+>>> amount = goal - current
+>>> amount
+4839
+>>>
+```
+
+That's the number required to increase our balance to the expected value
+
+But the issue is a check is done that compares the value of what we want to increase by with `4839`
+
+So we can't use that
+
+Then how can we get to that expected value?
+
+Well look at this:
+
+```c
+printf("Account increased by %d EcoWas. New balance: %d EcoWas\n", (longlong)increase_amount_by & 0xffffffff,(ulonglong)balance);
+```
+
+It will use bitwise `AND` operation on our input with this large hex value `0xffffffff`
+
+So basically what bitwise `AND` does is that when both bits are the same i.e `1 and 1` , the corresponding result bit is set to the value i.e `1`
+
+And in C language when you define a variable the specific amount of space is allocated to store that data in memory , a variable defined as int data type in C will occupy 4 bytes of space
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/8b62972b-2343-4e0f-b8e2-bd0aa35fa6aa)
+
+You can't assign values which take more space to store in memory.
+
+When you try to do that an overflow will occur, and the overflowed bits will be ignored.
+```c
+#include <stdio.h>
 
 
+void main()
+{
+  unsigned int integer = 4294967295;
 
+  printf("%d",integer+1);
+}
+```
 
+Rather than showing 4294967296, which is the expected result the program printed 0 . 
 
+This happed because, integer variable is declared as a unsigned integer and the range of values which can be stored in 4 bytes of space is 0 - 0xffffffff (2 ** 32 -1 ).
 
+Thus adding one will cause an overflow ( 1 + 0xffffffff = 0x100000000 ) and the extra bit will be ignored and the result becomes 0
+
+Now that we know that, when we give the program `0xffffffff + 1` as the amount we want to increase, our balance will set to `0`
+
+This is good cause now we can just do this `0xffffffff + 4839 + 1` which will then make our balance to be `0x1337` and that's enough to make a purchase
+
+So let's get to it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/05d06a2f-6921-4c3e-83bc-aa156dab6c49)
+```python
+➜  petstar python3
+Python 3.11.2 (main, Feb 12 2023, 00:48:52) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 0xffffffff + 4839 + 1
+4294972135
+>>>
+```
+
+So the value we will increase our amount by is `4294972135`
+
+Doing that worked
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/4998212d-2af6-4633-b1e1-8167ffa203d5)
+
+Now we have the flag
+
+```
+Flag: EcoWasCTF{Gg_you_Got_it_Right_4294972135}
+```
 
 
 
