@@ -2544,9 +2544,103 @@ Now we have the flag
 Flag: EcoWasCTF{Gg_you_Got_it_Right_4294972135}
 ```
 
+#### DotNetBin
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/03ef98ee-e343-46bf-8242-401e42ef735b)
 
+Downloading the attached file shows it's a `.NET` binary
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/509a2545-7171-4e23-9190-6de6e5fb0c44)
 
+I don't have `NET` library to run it but I can also just run it on my Windows VM
 
+But first I'll decompile it using `ILSPY` which is a `.NET` decompiler for Linux Based OS
+
+Here's the main function
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/38513004-1313-4235-84e0-c6ae67a06c2b)
+
+```c#
+	private static void Main(string[] args)
+	{
+		Console.WriteLine("Hello!");
+		Console.WriteLine("Send me 4 characters and I can decrypt something for you...");
+		Console.WriteLine(Dec("PD1VICE4WRgpOVU1KjRGGC45VSkFKFsyBSVcLjQ6SQ==", Console.ReadLine()));
+		Console.WriteLine("Bye-byte!");
+		Console.ReadKey();
+	}
+}
+```
+
+We can see that it will ask for 4 character then that 4 character string is passed into the `Dec` function also with the base64 encoded flag
+
+Here's the `Dec` decompiled function
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/55c81f74-cdf6-4cb2-a53a-bb55196d3453)
+
+```c#
+private static string Dec(string enctext, string pad)
+{
+	byte[] source = Convert.FromBase64String(enctext);
+	byte[] key = Encoding.UTF8.GetBytes(pad);
+	return Encoding.UTF8.GetString(source.Select((byte b, int i) => (byte)(b ^ key[i % key.Length])).ToArray());
+}
+```
+
+Basically what this does is to decode the first parameter passed into it and then encodes the key which is the second parameter to `utf-8`
+
+After that is done it will xor they parameter with the key
+
+Ok now that we know that we can implement that in python also
+
+But what of the encrypt function 🤔 
+
+It's not really of any help but it xor the plaintext with a key
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/48f09dae-9eb1-4022-88b0-764742dc1337)
+
+```c#
+private static string Enc(string plaintext, string pad)
+{
+	byte[] bytes = Encoding.UTF8.GetBytes(plaintext);
+	byte[] key = Encoding.UTF8.GetBytes(pad);
+	return Convert.ToBase64String(bytes.Select((byte b, int i) => (byte)(b ^ key[i % key.Length])).ToArray());
+}
+```
+
+Since we know the key is just 4 bytes
+
+It can be easily brute forced
+
+I did that in python
+
+Here's my solve [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/reverse%20engineering/DotNetBin/solve.py)
+
+```python=
+from base64 import b64decode as d
+
+def xor(data, key):
+    return bytes([data[i] ^ key[i % len(key)] for i in range(len(data))])
+
+def brute(ct):
+    possible_keys = [ord(char) for char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"]
+    
+    for key1 in possible_keys:
+        for key2 in possible_keys:
+            for key3 in possible_keys:
+                for key4 in possible_keys:
+                    key = bytes([key1, key2, key3, key4])
+                    decrypted = xor(ct, key)
+                    print(f"Key: {chr(key1)}{chr(key2)}{chr(key3)}{chr(key4)},  Plaintext: {decrypted}")
+
+if __name__ == "__main__":
+    b_ct = "PD1VICE4WRgpOVU1KjRGGC45VSkFKFsyBSVcLjQ6SQ=="
+    ct = d(b_ct)
+
+    brute(ct)
+```
+
+After running, it prints many result but eventually you will get the key to be `ZQ4G` and also the flag
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/d8b24291-acca-4ee4-9755-414180122dea)
+
+```
+Flag: flag{im_sharper_than_you_think}
+```
 
 
 
