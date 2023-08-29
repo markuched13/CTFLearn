@@ -2494,6 +2494,7 @@ It will use bitwise `AND` operation on our input with this large hex value `0xff
 So basically what bitwise `AND` does is that when both bits are the same i.e `1 and 1` , the corresponding result bit is set to the value i.e `1`
 
 And in C language when you define a variable the specific amount of space is allocated to store that data in memory , a variable defined as int data type in C will occupy 4 bytes of space
+
 ![image](https://github.com/markuched13/CTFLearn/assets/113513376/8b62972b-2343-4e0f-b8e2-bd0aa35fa6aa)
 
 You can't assign values which take more space to store in memory.
