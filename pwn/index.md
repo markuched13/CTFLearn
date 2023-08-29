@@ -1,4 +1,4 @@
-![image](https://github.com/markuched13/CTFLearn/assets/113513376/604752c8-6275-4707-aef6-f3c8406ba0f3)<h3>
+<h3>
     Ecowas CTF 2023 ( Prequalification )
 </h3>
 
