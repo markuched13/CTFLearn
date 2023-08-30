@@ -3,12 +3,10 @@
 </h3>
 
 ![1](https://github.com/markuched13/CTFLearn/assets/113513376/44459902-d3ed-4936-bbf8-fa1fe806481e)
- 
 
-Over about two weeks I and my team mates played as team `@error` 
+Over about two weeks I and my team mates played as team `@error`
 
 Here's the solution to the challenges we solved:
-
 
 ### Challenges Solved:
 
@@ -3700,4 +3698,19 @@ You can tell there's a word in that image that says `shines`
 Fourth secret: shines
 ```
 
+The last image which is the fourth one holds the 5th secret
+
+And to get it ........
+
+```
+Fifth secret: Africa
+```
+
+Joining all the secret together to a readable word gave this:
+
+```
+Flag: EcoWasCTF{Rising as one, Africa shines}
+```
+
+And that's all `(　-_･)σ - - - - - - - `
 
