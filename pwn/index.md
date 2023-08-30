@@ -3531,3 +3531,97 @@ Using it worked and I got the flag
 Flag: flag{kramer_the_best_hacker_ever}
 ```
 
+#### Zangbeto
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/2356bd73-f748-418e-b6da-a3aa5c95435a)
+
+Downloading the file and checking it's file type shows this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/e601b455-5b08-4d2f-9e4c-7ee9aac842a3)
+
+After unzipping it I got this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/55df7d7f-5a84-4f95-9102-48e483bbe43f)
+
+So it's actually a word document file
+
+I used grep to find the flag
+
+Out of luck I tried that and it worked lol
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/5032d7e8-8f92-4d21-b5a3-9dc48fca7850)
+
+```
+Flag: flag{old_macdonald_or_mcdonalds_supplier}
+```
+
+#### A Peculiar Email
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/54c1908a-8851-47b8-9865-bae1ac223629)
+
+Downloading the attached file and checking it's content shows this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/9ec10e7b-aed5-414f-be3f-4e1bd977a6d5)
+
+Since the challenge was referring to spam mail I researched and found this [site](https://www.spammimic.com/decode.shtml)
+
+Using that I decoded the spam mail got the flag
+
+```
+Flag: flag{Why do you have an affinity for concealed matters? Proceed and confess!}
+```
+
+#### Sentinnelle
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/2e0b588e-a052-4dc4-8fff-dfd1c29b6606)
+
+After downloading the file attached showed it's a `JPEG` file
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/fa3b039f-9543-4a33-ae23-65624845cba8)
+
+Next thing I tried was to view it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/fe0f86d2-e21c-49b4-9c3f-555bafde8009)
+
+A black and white photo
+
+I first used stegsolve and changed to various colour offsets maybe the flag is hiding in another offset but it wasn't
+
+Running steghide didn't extract anything without a password provided
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/002ab84b-7ed6-419a-a06c-ef335fc20d5e)
+
+Since we don't know the password I decided to try crack it using `stegseek`
+
+Doing that worked and got an extracted `.wav` file
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/1952294e-c65e-47cb-94c4-3366378b1ed2)
+
+When I listened to it I was sure it was morse code
+
+But on decoding showed it's a troll 😹
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/b0472684-286e-4c35-9759-636991ddcf00)
+
+At this point I decided to try using Audacity to look at spectogram but it didn't give anything
+
+I also tried LSB Steg on both the image and the wav file & stegsolve but got nothing
+
+After hours of trying random things I saw online and none worked 
+
+I took a quick nap to calm my nerves cause I find it better to solve things when I'm calm
+
+When I woke up I decided to check strings for low hanging fruits 👀
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/dd5c5f13-4cd9-4133-9907-cd5f2089e7b7)
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/97529ef1-d908-417b-bb51-1ff1bd154d19)
+
+Nothing there looks out of the ordinary but you'll notice most of them are of same length
+
+Next I tried search which string has at least length of 10
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/110e3a3a-285a-450e-a772-30c78592887b)
+
+Only those string are quite different from the rest
+
+I used dcodefr to identify it and got this
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/176cc9da-e1d5-4ac7-812a-31b29980d3a3)
+
+It found possible encryption schema likely used 
+
+The first one doesn't give anything but the second (ROT47) does
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/86a02c79-49ee-489b-9464-980f18e2d4e9)
+
+That was really guessy but anyways we have the flag 🙂
+
+```
+Flag: EcoWasCTF{fRl38JWTwHInm2oAoVDNomaReoVp}
+```
+
+#### Yaa Asantewa
