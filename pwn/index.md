@@ -3504,3 +3504,30 @@ Doing that and reading the file I got the flag
 ```
 Flag: flag{its_adventure_time_yee_boi!!!}
 ```
+
+#### Assini
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/2966f585-87bb-451c-867d-d50008cbad22)
+
+After downloading the file and checking the file type I got that it's a pdf file
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/31f8831e-ea15-48b1-93eb-d918f13ab43c)
+
+Trying to open it requires a password
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/098f8565-3fa5-466d-b8fd-94c50e391540)
+
+So I brute forced the password using John The Ripper
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/c2c29703-402b-42e0-b751-d13280f47149)
+
+```
+- pdf2john Assini > hash
+- john -w=/usr/share/wordlists/rockyou.txt hash
+```
+
+The password for the pdf is `hacked`
+
+Using it worked and I got the flag
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/fc2ba0be-78ee-4ef7-9e92-e507f60389bf)
+
+```
+Flag: flag{kramer_the_best_hacker_ever}
+```
+
