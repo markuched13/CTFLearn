@@ -2863,13 +2863,30 @@ Flag: EcoWasCTF{Y0U_4R3_4_M4ST3R_0F_Z3!}
 ### Cryptography 11/11
 
 #### Decode_Me 
-![Uploading image.png…]()
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/47125e97-8aab-4715-8cb0-47f5d35320e2)
 
 We are given a value to decode
 
 I just used cyberchef to decode that
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/dbf4c249-7f5a-48c4-a471-fb5d0f552ff0)
 
+```
+Flag: flag{can_you_feel_the_encoding_now?}
+```
 
+#### Hashes
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/a36b7b1c-6c28-4a8b-86cb-35c92688f6d8)
 
+We are given a hash which looks like MD5
+
+To crack it I used crackstation
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/cca38284-7577-434c-b23e-910a26914ad8)
+
+```
+Flag: flag{dolphins11}
+```
+
+#### Read Me Please
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/8e51a008-099d-404c-8b0e-a0e156369092)
 
 
