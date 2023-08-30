@@ -3230,4 +3230,7 @@ print(flag)
 Running the script gave the flag
 
 ```
-Flag: 
+Flag: EcoWasCTF{D0_not_Reuse_key_5897477774}
+```
+
+
