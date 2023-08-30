@@ -1,4 +1,4 @@
-<h3>
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/cc5e6404-1709-45ec-9602-4d0f0c7a6c0d)<h3>
     Ecowas CTF 2023 ( Prequalification )
 </h3>
 
@@ -2960,4 +2960,140 @@ Running it gives the flag
 
 ```
 Flag: EcowasCTF{i_h4ve_an_RSA_fetish_;)}
+```
+
+#### Ron Adi Leonard
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/fefea961-65f4-47a9-934e-434793ba6e23)
+
+We are given the encoded flag and a RSA public key
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/d563527b-48fc-4a20-b3f5-692e4eb843ca)
+
+Since the public key is generated from the public modulus and exponent we need to extract it
+
+To do that I used this [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/cryptography/Ron%20Adi%20Leonard/extract.py)
+
+```python=
+from Crypto.PublicKey import RSA
+
+public_key = open('public.pem', "rb").read()
+key = RSA.importKey(public-key)
+
+print(repr(key))
+```
+
+Running it gives the value of `n` and `e`
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/eab61c0c-1349-4b1e-81f4-d7bce79a9be4)
+
+Next thing I'll do is to check if I can factorize `n` 
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/14839002-0cae-4e57-b20d-b9fde7e77c63)
+
+Cool we can! This makes it easy to solve since we can now get `d` which is the private exponent
+
+Here's my solve [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/cryptography/Ron%20Adi%20Leonard/solve.py)
+
+```python=
+#!/usr/bin/python3
+from Crypto.Util.number import long_to_bytes, bytes_to_long, inverse
+
+n = 1209143407476550975641959824312993703149920344437422193042293131572745298662696284279928622412441255652391493241414170537319784298367821654726781089600780498369402167443363862621886943970468819656731959468058528787895569936536904387979815183897568006750131879851263753496120098205966442010445601534305483783759226510120860633770814540166419495817666312474484061885435295870436055727722073738662516644186716532891328742452198364825809508602208516407566578212780807
+e = 65537
+
+p = 1099610570827941329700237866432657027914359798062896153406865588143725813368448278118977438921370935678732434831141304899886705498243884638860011461262640420256594271701812607875254999146529955445651530660964259381322198377196122393
+q = 1099610570827941329700237866432657027914359798062896153406865588143725813368448278118977438921370935678732434831141304899886705498243884638860011461262640420256594271701812607875254999146529955445651530660964259381322198377196122399
+
+phi = (p-1) * (q-1)
+d = inverse(e, phi)
+
+
+enc = bytes_to_long(open('flag.enc', 'rb').read())
+pt = pow(enc, d, n)
+print(long_to_bytes(pt))
+```
+
+Running the script gives the flag
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/299bd051-da1e-4947-91e4-3dea05bcf4a8)
+
+```
+Flag: EcoWAS{Let_me_try_RSA}
+```
+
+#### Sakpatè 
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/30cb8d64-7a40-41b5-8094-fdb2878af2cb)
+
+From the description of the challenge we are dealing with XOR bitwise operation
+
+No key was provided so I assumed the key was just a single byte i.e `0-0xff`
+
+I used cyberchef to brute force it though I would have just easily scripted this but yunno `CTF == TIME`
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/0639299f-de92-4a67-927e-10f94b5665cd)
+
+```
+Flag: flag{xor_puts_the_fun_in_fundamental}
+```
+
+#### Kashe Kanka 
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/7965f548-251a-40fa-a1e7-d34e0ebe4c0b)
+
+We are given a base64 encoded value and told that it's encrypted with a key of length 7 
+
+One thing we can try apply to decode that is using XOR which is a bitwise operation
+
+But the issue is that we don't have the complete key 
+
+It's actually isn't a problem and that's so because of the commutative property of XOR:
+
+```
+a ^ b = c
+b ^ c = a
+c ^ a = b
+```
+
+With that we can get the key!!
+
+But it won't be the complete 7 character key but where as just 5 character
+ 
+That's so because the known plaintext is `flag{` whose length is 5
+
+So the remaining two characters can be easily brute forced
+
+With that said, to get the key we need to xor our known plaintext with base64 decoded flag
+
+I used python pwn.xor module to do that
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/a7c4c343-f7be-488e-844d-e6dfde598d42)
+
+```python=
+➜  KasheKanka python3
+Python 3.11.2 (main, Feb 12 2023, 00:48:52) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from warnings import filterwarnings
+>>> filterwarnings('ignore')
+>>> from base64 import b64decode as d
+>>> from pwn import xor
+^[[A
+>>> pt = "flag{"
+>>> ct = d("IAUPA1sVCjQ2HhFUHjoyAQs7UBgLGQAAO1AYCxkLDxdFCTogBQ8DXQ==")
+>>> key = xor(pt, ct)[:len(pt)]
+>>> 
+>>> key
+b'Find '
+>>> 
+>>> len(key)
+5
+>>>
+```
+
+The first 5 characters of our key is `Find ` 
+
+Notice that there's a space character after letter `d` which makes the length 5
+
+Now to brute force it I just made a sily script 
+
+Here's my solve [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/cryptography/kashe%20kanka/solve.py)
+
+After running it, I got lot of output but eventually saw a readable word
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/d0360634-4930-4045-b651-66c944dd7fee)
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/674dc1b9-64f7-4b24-9eef-1b08c6f2d7e4)
+
+```
+Flag: flag{xor_puts_the_pun_in_pun_based_flag}
 ```
