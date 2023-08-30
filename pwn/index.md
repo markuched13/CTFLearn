@@ -3296,3 +3296,52 @@ Now on decoding that NOTed value with cyberchef and using the MAGIC function we 
 ![image](https://github.com/markuched13/CTFLearn/assets/113513376/37623d9b-e53c-4aa7-804e-9bee579dc608)
 
 Since I had no idea what that is I used `dcodefr` to identify it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/ed64c112-ceb1-4a71-b467-4729defaea85)
+
+Ok it's base62 encoding
+
+I decoded that from cyberchef and got this ASCII decimal values
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/9e6166cf-f2d8-4ec2-b493-ad03ff44afa7)
+
+Further decoding using the magic function reached here
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/38544e08-2a40-4b02-9936-dff8c06edf27)
+
+```
+Note: When I tried decoding that ASCII decimal representation value it got us into rabbit hole for a while 🥲
+```
+
+Anyways what the hell is this:
+
+```
+hbaa{{@A027B:42?@A0?646F:A2?04@=23@A2I0O04U646N0;S?L@Y}
+```
+
+I noticed that this people love ROT47 (from the steg chall btw) so I tried converting it from that and got this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/c7c0f47f-3266-461f-b0e3-1f8589c11c0c)
+
+It kinda seems like `africa` but it isn't complete
+
+This is were the main issue was decoding that value
+
+After hours of trying various online tools like dcodefr, boxentriq etc. 
+
+It couldn't identify that
+
+So this is were guessing kinda comes in 
+
+Using [this]([https://book.hacktricks.xyz/crypto-and-stego/crypto-ctfs-tricks](https://book.hacktricks.xyz/crypto-and-stego/crypto-ctfs-tricks) and yea trying them all 💀
+
+You will get that `Bifid` cipher looks interesting because it starts with `flag{`
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/92537827-d92a-46ba-9b62-f305bccc3359)
+
+I then used ROT47 which then decoded to the flag
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/f9bf78d8-aa95-42cb-963a-1f8e8b7f0d3f)
+
+```
+Flag: flag{Los_africanos_necesitan_colaborar_x_crecer_juntos}
+```
+
+The process was really tedious but interesting 🙂
+
+
+
