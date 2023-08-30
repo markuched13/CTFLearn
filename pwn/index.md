@@ -3329,7 +3329,7 @@ It couldn't identify that
 
 So this is were guessing kinda comes in 
 
-Using [this]([https://book.hacktricks.xyz/crypto-and-stego/crypto-ctfs-tricks](https://book.hacktricks.xyz/crypto-and-stego/crypto-ctfs-tricks) and yea trying them all 💀
+Using [this](https://book.hacktricks.xyz/crypto-and-stego/crypto-ctfs-tricks](https://book.hacktricks.xyz/crypto-and-stego/crypto-ctfs-tricks) and yea trying them all 💀
 
 You will get that `Bifid` cipher looks interesting because it starts with `flag{`
 ![image](https://github.com/markuched13/CTFLearn/assets/113513376/92537827-d92a-46ba-9b62-f305bccc3359)
@@ -3343,5 +3343,73 @@ Flag: flag{Los_africanos_necesitan_colaborar_x_crecer_juntos}
 
 The process was really tedious but interesting 🙂
 
+#### Spot Terrorist Secret Message
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/39ef207b-32c9-45a6-b9c0-35654ee94bfd)
 
+This was kinda the challenge that determined which team qualify 
+
+Was happy when we did it 🙏
+
+It wasn't all that hard and I wouldn't say guessy also
+
+Let's get to it 😜
+
+Downloading the attached file shows it's an image file
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/6a6bed5b-ff35-4227-bf5c-59684f29ab16)
+
+From the image we can see the ECOWAS based countries
+
+I first tried using steghide with no password but it didn't get anything
+
+Since those are country flags on the image I tried using the password as the Alpha2Code representation but that didn't work
+
+After few hours we got the password to be `ECOWAS`
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/7dcd628e-eaa9-4899-87dd-baeba529ef77)
+
+From the look of the extracted file we can immediately tell it's StegSnow
+
+I tried if I could get the plaintext but that didn't work
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/f613dab9-c747-4c3d-9c45-c7d2afab2c16)
+
+So this needs a password
+
+But this is where the issue began
+
+We spent so many hours trying to brute force the stegsnow password but rockyou was so large and was taking so much time and you can tell from my cwd I also was trying various stuff in order to get the stegsnow password
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/511bcb81-339a-4f92-9ca8-17d73c878d58)
+
+Eventually after the trial and stuffs we then tried to use combinations of the CTF name
+
+Since the steghide password was ECOWAS, we tried various combination like ECOWAS, ecowas, 3c0w45 etc.
+
+And eventually we got it to be `ECOWAS2023` at this point we all looked dumb 😿
+
+So on decoding that stegsnow we got this binary value
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/072fecff-ef60-43c2-9736-325ebd1dac7b)
+
+Decoding that from cyberchef gives this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/b2f45f5b-5c50-4998-8523-4510ca0267dd)
+
+```
+⠥⠨⠉⠢⠑⠉⠁⠟⠋⠤⠒⠑⠍⠒⠙⠊⠑⠉⠴⠩⠑⠊⠑⠉⠀⠑⠙⠋⠌⠙⠝⠲⠲⠍⠤⠙⠫⠋⠋⠖⠩⠑⠟⠲⠲⠴⠫⠉⠛⠑⠉⠡⠏⠙⠤⠚⠉⠙⠵⠉⠂⠑⠉⠱⠦⠙⠔⠫⠉⠴⠫⠉⠂⠫⠉⠞⠥⠑⠵⠆
+```
+
+From that we can immediately tell it's Braille cipher
+
+I used cyberchef to decode it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/4693f01e-38d7-4e63-ac4f-a23aa1837735)
+
+```
+U.C5ECAQF-3EM3DIEC0%EIEC EDF/DN44M-D$FF6%EQ440$CGEC*PD-JCDZC1EC:8D9$C0$C1$CTUEZ2
+```
+
+Since I have no idea what that is I used dcodefr to identify it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/f60c40a4-4966-442c-8a78-bee84f62f3f0)
+
+Cool it's base45 decoding from cyberchef gives the flag
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/4f72235e-6ac4-4217-b955-f5fdd34ba801)
+
+```
+flag{Congratulations on your remarkable achievement!}
+```
 
