@@ -3625,3 +3625,35 @@ Flag: EcoWasCTF{fRl38JWTwHInm2oAoVDNomaReoVp}
 ```
 
 #### Yaa Asantewa
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/2988744b-a711-4ad6-896c-dbcc95d7530a)
+
+We are given a zip file that contains 5 files
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/134da418-0a2c-461f-8388-836aaf4014f5)
+
+Trying to unzip it requires a password
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/1ba52f52-f60d-436c-8a28-d1495215dd80)
+
+So I brute forced it using JTR
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/d918b579-6436-4318-9b58-61fc0ff2c974)
+
+The password is `096630060`
+
+Unzipping it gives 5 files where 4 are images and the last one is a RAR file
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/c45cc375-d933-4634-9e0b-cb036a845ae2)
+
+From the challenge description we are to find the secrets and piece them all together
+
+For the first image `hollow_mech.webp` checking `strings` gave this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/e3aaef65-0c75-4000-88de-9efadc1a06c2)
+
+We can see the base64 encoded value `VGhlIGZpcnN0IHNlY3JldCA6IFJpc2luZw==`
+
+Decoding it gives the first secret
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/b65c012e-b5a9-49e5-bc18-512a5e18ac84)
+
+```
+The first secret : Rising
+```
+
+Viewing it shows this cool hollow but the image is scrammbled at another offset
+ 
