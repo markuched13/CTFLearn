@@ -3145,3 +3145,89 @@ Running it gives the flag
 Flag: flag{43bc9aaf8b315435c2459fcb5aaf710a683a917294130b64413f3814465aaf30ffb84a3e86dcf904b2da35352322fa10fccb3e70b6d6b20efb3dc756e5}
 ```
 
+#### Dangbui
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/d43223c0-01bb-4c62-ad31-2572767e0e71)
+
+Downloading the attached file and checking the python script shows this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/ce810f31-ff15-4670-bcc2-bc9d37d14e89)
+
+```python=
+#!/usr/bin/env python
+
+from Crypto.Cipher import AES
+import os
+from Crypto.Util import Counter
+
+key = os.urandom(16)
+
+def encrypt(data) :
+
+	cipher = AES.new(key, AES.MODE_CTR, counter=Counter.new(128))
+	ciphertext = cipher.encrypt(data)
+	return ciphertext.hex()
+
+with open("flag.txt", 'rb') as f:
+	flag = f.read().strip()
+
+anthem = bytes("""Salut à toi pays de nos aïeux, 
+		Toi qui les rendais forts, paisibles et joyeux, 
+		Cultivant vertu, vaillance, 
+		Pour la postérité. 
+		Que viennent les tyrans, ton cœur soupire vers la liberté, 
+		Togo debout, luttons sans défaillance, 
+		Vainquons ou mourons, mais dans la dignité, 
+		Grand Dieu, toi seul nous as exaltés, 
+		Du Togo pour la prospérité, 
+		Togolais viens, bâtissons la cité.""", "utf-8")
+
+
+print(encrypt(anthem))
+print(encrypt(flag))
+```
+
+From the script we can see that this implements AES CTR encryption used on the flag
+
+And the key is 16 random bytes making brute force not fessible 😕
+
+We are given the encrypted anthem and flag
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/1856d903-eb4b-464f-9f1e-c1c90437e81b)
+
+Since we have the encrypted anthem value with it's plaintext
+
+And the same key is being used to encrypt the flag
+
+We therefore can perform `AES Reused Key` attack
+
+Since AES works base on bitwise xor operation
+
+Here's the solve [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/cryptography/Dangbui/solve.py)
+
+```python=
+import binascii
+from pwn import xor
+
+anthem = bytes(""" Salut à toi pays de nos aïeux, 
+        Toi qui les rendais forts, paisibles et joyeux, 
+        Cultivant vertu, vaillance, 
+        Pour la postérité. 
+        Que viennent les tyrans, ton cœur soupire vers la liberté, 
+        Togo debout, luttons sans défaillance, 
+        Vainquons ou mourons, mais dans la dignité, 
+        Grand Dieu, toi seul nous as exaltés, 
+        Du Togo pour la prospérité, 
+        Togolais viens, bâtissons la cité.""", "utf-8")
+
+with open('output.txt') as h:
+    enc_test = binascii.unhexlify(h.readline().strip())
+    enc_flag = binascii.unhexlify(h.readline().strip())
+
+blob = xor(enc_test, enc_flag)
+flag = xor(blob, anthem[:len(enc_flag)])[:len(enc_flag)]
+
+print(flag)
+```
+
+Running the script gave the flag
+
+```
+Flag: 
