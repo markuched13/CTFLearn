@@ -3714,3 +3714,6 @@ Flag: EcoWasCTF{Rising as one, Africa shines}
 
 And that's all `(　-_･)σ - - - - - - - `
 
+After all the struggle and pain of waiting 1AM / 1PM daily the ctf ended and hopefully we qualified 🙏
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/7284a318-806e-4687-bbb6-7b5ba60a95a3)
+
