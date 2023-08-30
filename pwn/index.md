@@ -3413,3 +3413,94 @@ Cool it's base45 decoding from cyberchef gives the flag
 flag{Congratulations on your remarkable achievement!}
 ```
 
+### Forensics 9/9
+
+#### Fairy Tale
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/9ff62b84-e42f-49ba-8c98-fad2cee99b00)
+
+Downloading the attached file and checking it's file type shows it's a zip file
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/1b6235cf-c756-4407-bd8c-98906fc1d317)
+
+When I tried unzipping I got this error
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/7cae3fc7-1c26-4791-8aab-5e3d8edf68a1)
+
+If we take a look at the hex header we can see that it's been modified to that of a PDF file
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/64544083-2f01-4523-b073-b5a06274c96b)
+
+So I changed: `25 50 44 46` to the file signature of a ZIP file `50 4B 03 04` using hexeditor
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/c4865ae2-f9ad-4b77-9605-5f83e5e0ef28)
+
+Viewing the image gives this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/35ff586b-cb36-40bf-bdfa-b53d989ab3db)
+
+We can decode that using cyberchef
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/09e86183-694d-4271-b5c4-3e86ef634ec0)
+
+```
+EcoWasCTF{oNe_CuTe_CaT!}
+```
+
+And yes I wrote those hex values manually 💀 though we can use tesseract or python PIL library to extract the text from the image but uhh who wants to do that when pressure is everywhere lol 😂
+
+#### Etikonam
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/48ab5211-3754-4aa4-ad68-0108e40aa3c9)
+
+Downloading the file attached and checking the file type shows this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/5dff5fd9-a8dc-435e-96a8-fec9cc9aad38)
+
+Ok we can see that it contains PNG file from the result of `binwalk`
+
+So I extracted it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/5d73d1f1-0075-41ad-8603-de80f2d11f05)
+
+```r
+binwalk --dd='.*' Etikonam.zip
+```
+
+On viewing the PNG file gave the flag
+
+```
+Flag: flag{help_im_stuck_at_the_pet_store}
+```
+
+#### Where is my Flash
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/9a4d8128-c691-4efa-bf25-c6b80a78885c)
+
+Downloading the attached file and checking the file type shows this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/ff392fc2-9926-4a35-b544-284dca9c725a)
+
+From the challenge title the ideal thing to do is maybe find a way to mount it since it's referring to `Flash Drive` then check for the things there
+
+But I didn't do that
+
+I used `foremost` to extract what it can from the file
+
+And from that result it shows `password.txt` which looks interesting to check
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/d351878b-45cf-4880-b219-d2f5f54531cb)
+
+```
+foremost -i lost_flash_drive
+```
+
+Looking through the audit it extracted 17 files
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/d471ebb6-9d58-465b-b8c5-73164aee0433)
+
+The file names are all given here
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/22ae8b35-7004-4209-8c43-cd404d2a8f1c)
+
+Ok the files there are interesting
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/bda4d054-3ba2-4cf8-8d0b-166abc442ba6)
+
+Most of them are `jpegs` so I'm not checking em out
+
+But on checking that peculiar zip file I got this
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/1a56f39c-c123-42d4-b6b9-908ce0970054)
+
+A `password.txt` file!! I'll unzip this since that looks interesting
+
+Doing that and reading the file I got the flag
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/78594adf-13ba-422f-bc11-79b6c64d27b0)
+
+```
+Flag: flag{its_adventure_time_yee_boi!!!}
+```
