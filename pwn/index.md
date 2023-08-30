@@ -2889,4 +2889,75 @@ Flag: flag{dolphins11}
 #### Read Me Please
 ![image](https://github.com/markuched13/CTFLearn/assets/113513376/8e51a008-099d-404c-8b0e-a0e156369092)
 
+After downloading the attached file, on checking the content gave this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/9e2bce86-7e71-401d-bba8-0a31c9bd1dfe)
 
+They are lots of space characters we can confirm that by viewing the hex dump
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/b51f75a6-b1ba-4375-9cbb-082d952efd8a)
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/b2acfa76-e460-4fc0-b0a0-a131c3b4444f)
+
+Ok they are not really space but like dots and tabs
+
+This stenography is called Steg Snow
+
+And to decode it I used stegsnow
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/492f2994-fee1-4078-b76b-9c2e3df8f378)
+
+```
+stegsnow -C Motivation_Text_For_You.txt
+```
+
+It gives the hex dump of a value 
+
+I then used cyberchef to decode that
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/ef8a6454-35f7-4b9d-a35a-da9084d8a34a)
+
+```
+Flag: flag{Persisting with determination is always worthwhile.Never give up!....}
+```
+
+#### IZRSA
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/806ef19f-b17e-41f6-ab64-69518ce3c769)
+
+We are given the following values:
+- The public modulus `n`
+- The ciphertext `c`
+- The public exponent `e`
+
+The first thing I'll do is to check if the value of `n` can be factorized
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/6e62fed3-dde1-429f-9cbd-6719150abf22)
+
+Cool it can be factorized now that we know that we have the two prime numbers used to form the public modulus
+
+At this point I'll need the private exponent which is needed to decrypt the ciphertext
+
+To find the private exponent `d,` we use the fact that `e*d = 1 (mod tot(n))`, where `tot(n) = (p-1)*(q-1)` this is also known as the Euler totient function
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/6fddadc2-2dc0-4288-9d23-6567b2574484)
+
+And after getting `d` we can just decrypt ciphertext to get the plaintext which should contain the flag
+
+Here's my solve [script](https://github.com/markuched13/markuched13.github.io/blob/main/solvescript/ecowas23/prequal/cryptography/Izrsa/solve.py)
+
+```python=
+from Crypto.Util.number import long_to_bytes, inverse
+
+N = 1209143407476550975641959824312993703149920344437422193042293131572745298662696284279928622412441255652391493241414170537319784298367821654726781089600780498369402167443363862621886943970468819656731959468058528787895569936536904387979815183897568006750131879851263753496120098205966442010445601534305483783759226510120860633770814540166419495817666312474484061885435295870436055727722073738662516644186716532891328742452198364825809508602208516407566578212780807
+c = 253531916432322298053250937193688715804675877467421863721500099250994106573287490406946422261539808641643579360867972587480442118769784193102040867769698847348444487381478224610267159208895311306363039022363007025402831809706871344008605633536701876907909395530746273077680104860539268870737996595986255451860526076417328003406583877583122138052686641536049736650895970946946035823502502768574935902696678047030376591729571293315520443583996286045618057879759381
+e = 65537
+
+p = 1099610570827941329700237866432657027914359798062896153406865588143725813368448278118977438921370935678732434831141304899886705498243884638860011461262640420256594271701812607875254999146529955445651530660964259381322198377196122393
+q = 1099610570827941329700237866432657027914359798062896153406865588143725813368448278118977438921370935678732434831141304899886705498243884638860011461262640420256594271701812607875254999146529955445651530660964259381322198377196122399
+
+phi = (p - 1) * (q - 1)
+d = inverse(e, phi)
+
+pt = pow(c, d, N)
+print(long_to_bytes(pt).decode())
+```
+
+Running it gives the flag
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/fd5c1917-b75b-43fb-8637-0b1e5f3a94a8)
+
+```
+Flag: EcowasCTF{i_h4ve_an_RSA_fetish_;)}
+```
