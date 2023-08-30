@@ -3656,4 +3656,48 @@ The first secret : Rising
 ```
 
 Viewing it shows this cool hollow but the image is scrammbled at another offset
- 
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/b9e00ae3-ebc4-421a-9759-88c6db84a648)
+
+The second image `layered.jpg` has this comment in the meta data
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/70f54f31-53fc-4a54-8396-3aa738363053)
+
+We can tell that's a hash
+
+I used crackstation to decode it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/b76e634e-e178-42e8-bd5c-bd201e1e230c)
+
+```
+Second secret: as
+```
+
+Checking it also shows this cool hollow
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/124f8e22-cebc-4f3c-b7b2-3cba33ebd1b3)
+
+The third image gave this when I ran `strings` on it
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/1254fe25-bd52-4b66-9f7e-f211aac6d7ab)
+
+```
+➜  src strings realmente_.png -n 20
+_``_````_``_```__``__`_`__`_``__
+➜  src
+```
+
+We can tell that's just two repeated patterns
+
+Converting them to zero's and one's gave this
+![image](https://github.com/markuched13/CTFLearn/assets/113513376/c3aac5a8-8029-4c79-8db8-129b7c7b5d29)
+
+```
+Third secret: one,
+```
+
+Viewing it showed this
+![1](https://github.com/markuched13/CTFLearn/assets/113513376/3e82abfe-9135-43eb-82d8-00bf48319edd)
+
+You can tell there's a word in that image that says `shines`
+
+```
+Fourth secret: shines
+```
+
+
