@@ -2860,8 +2860,14 @@ We can confirm it's the flag by passing it as the argument required by the binar
 Flag: EcoWasCTF{Y0U_4R3_4_M4ST3R_0F_Z3!}
 ```
 
-------- Will Upload Crypto & Forensics Soon ---------
+### Cryptography 11/11
 
+#### Decode_Me 
+![Uploading image.png…]()
+
+We are given a value to decode
+
+I just used cyberchef to decode that
 
 
 
